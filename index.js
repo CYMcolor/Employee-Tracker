@@ -2,18 +2,18 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
 
-// //connect to database
-// const db = mysql.createConnection(
-//     {
-//       host: 'localhost',
-//       // MySQL username,
-//       user: 'root',
-//       // TODO: Add MySQL password
-//       password: 'Njoya3r2',
-//       database: 'employees_db'
-//     },
-//     console.log(`Connected to the employees_db database.`)
-// );
+//connect to database
+const db = mysql.createConnection(
+    {
+      host: 'localhost',
+      // MySQL username,
+      user: 'root',
+      // TODO: Add MySQL password
+      password: 'Njoya3r2',
+      database: 'employees_db'
+    },
+    console.log(`Connected to the employees_db database.`)
+);
 
 // main to do question
 const to_do = [
@@ -26,7 +26,7 @@ const to_do = [
           'Update Employee Role',
           'View All Roles',
           'Add Role',
-          'View All Depeartments',
+          'View All Departments',
           'Add Department',
           'Exit'
         ],
@@ -34,25 +34,24 @@ const to_do = [
       }
 ]
 
-const test = [
-    {
-        type: 'input',
-        message: 'test?',
-        name: 'test',
-      }
-]
-
-
-let nextPrompt = () =>{
+let mainPrompt = () =>{
     inquirer.prompt(to_do).then((response)=>{
         switch (response.action) {
             case 'View All Employees':
                 viewEmployees();
                 break;
             case 'Add Employee':
-                testPrompt();
+                addEmployee();
                 break;
-            case 'quit':
+            case 'Update Employee Role':
+                break;
+            case 'View All Roles':
+                break;
+            case 'View All Departments':
+                break;
+            case 'Add Department':
+                break;
+            case 'exit':
                 break;
         }
 
@@ -60,17 +59,30 @@ let nextPrompt = () =>{
 }
 
 function viewEmployees(){
-    console.log('view employees');
-    nextPrompt();
-}
-
-function testPrompt(){
-    inquirer.prompt(test).then((res) =>{ 
-        console.log(res); 
-        nextPrompt();
+    db.query('Describe employee', function (err, results) {
+        console.log(results);
     });
-    //nextPrompt();
+    mainPrompt();
+}
+
+function addEmployee(){
+    inquirer.prompt([
+        {
+            type: 'input',
+            message: 'Enter first name:',
+            name: 'first_name'
+        },
+        {
+            type: 'input',
+            message: 'Enter last name:',
+            name: 'last_name'
+        }
+    ]).then((res) =>{ 
+        console.log(res); 
+        mainPrompt();
+    });
+
 }
 
 
-nextPrompt();
+mainPrompt();
