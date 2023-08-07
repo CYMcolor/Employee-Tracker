@@ -49,7 +49,9 @@ let nextPrompt = () =>{
             case 'View All Employees':
                 viewEmployees();
                 break;
-        
+            case 'Add Employee':
+                testPrompt();
+                break;
             case 'quit':
                 break;
         }
@@ -60,6 +62,14 @@ let nextPrompt = () =>{
 function viewEmployees(){
     console.log('view employees');
     nextPrompt();
+}
+
+function testPrompt(){
+    inquirer.prompt(test).then((res) =>{ 
+        console.log(res); 
+        nextPrompt();
+    });
+    //nextPrompt();
 }
 
 
