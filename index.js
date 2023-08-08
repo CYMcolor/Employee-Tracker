@@ -1,15 +1,15 @@
 // dependecies
 const inquirer = require('inquirer');
-const mysql = require('mysql2');
-
+const mysql = require('mysql2/promise');
+require('dotenv').config();
 //connect to database
 const db = mysql.createConnection(
     {
       host: 'localhost',
       // MySQL username,
-      user: 'root',
+      user: process.env.DB_USER,
       // TODO: Add MySQL password
-      password: 'Njoya3r2',
+      password: process.env.DB_PASSWORD,
       database: 'employees_db'
     },
     console.log(`Connected to the employees_db database.`)
@@ -52,10 +52,12 @@ let mainPrompt = () =>{
             case 'Add Department':
                 break;
             case 'exit':
+                console.log('exit');
+
                 break;
         }
-
-    })        
+        return;
+    }).then();        
 }
 
 function viewEmployees(){
@@ -76,13 +78,23 @@ function addEmployee(){
             type: 'input',
             message: 'Enter last name:',
             name: 'last_name'
+        },
+        {
+            type: 'input',
+            message: 'Enter role id:',
+            name: 'role_id'
+        },
+        {
+            type: 'input',
+            message: 'Enter manager id if applicable:',
+            name: 'manager_id'
         }
+        
     ]).then((res) =>{ 
         console.log(res); 
         mainPrompt();
     });
 
 }
-
 
 mainPrompt();
