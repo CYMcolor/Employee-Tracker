@@ -1,6 +1,6 @@
 // dependecies
 const inquirer = require('inquirer');
-const mysql = require('mysql2/promise');
+const mysql = require('mysql2');
 require('dotenv').config();
 //connect to database
 const db = mysql.createConnection(
@@ -36,6 +36,11 @@ const to_do = [
 
 let mainPrompt = () =>{
     inquirer.prompt(to_do).then((response)=>{
+        if( response.action == 'Exit')
+        {
+            console.log('You have exited the application');
+            db.end();
+        }
         switch (response.action) {
             case 'View All Employees':
                 viewEmployees();
@@ -51,17 +56,17 @@ let mainPrompt = () =>{
                 break;
             case 'Add Department':
                 break;
-            case 'exit':
-                console.log('exit');
-
-                break;
+            // case 'exit':
+            //     console.log('exit');
+            //     db.end();
+            //     break;
         }
         return;
-    }).then();        
+    });       
 }
 
 function viewEmployees(){
-    db.query('Describe employee', function (err, results) {
+    db.query('SELECT * FROM employee', function (err, results) {
         console.log(results);
     });
     mainPrompt();
@@ -96,5 +101,6 @@ function addEmployee(){
     });
 
 }
+
 
 mainPrompt();
