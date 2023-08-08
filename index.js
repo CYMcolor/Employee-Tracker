@@ -39,6 +39,7 @@ let mainPrompt = () =>{
         if( response.action == 'Exit')
         {
             console.log('You have exited the application');
+            //end the cconnection to th database
             db.end();
         }
         switch (response.action) {
@@ -49,17 +50,20 @@ let mainPrompt = () =>{
                 addEmployee();
                 break;
             case 'Update Employee Role':
+                updateRole();
                 break;
             case 'View All Roles':
+                viewRoles();
+                break;
+            case 'Add Role':
+                addRole();
                 break;
             case 'View All Departments':
+                viewDepartments();
                 break;
             case 'Add Department':
+                addDepartment();
                 break;
-            // case 'exit':
-            //     console.log('exit');
-            //     db.end();
-            //     break;
         }
         return;
     });       
@@ -101,6 +105,64 @@ function addEmployee(){
     });
 
 }
+
+function updateRole(){
+    console.log('update role');
+    mainPrompt();
+}
+
+function viewRoles(){
+    db.query('SELECT * FROM role', function (err, results) {
+        console.log(results);
+    });
+    mainPrompt();
+}
+
+function addRole(){
+    inquirer.prompt([
+        {
+            type: 'input',
+            message: 'Enter title:',
+            name: 'role_title'
+        },
+        {
+            type: 'input',
+            message: 'Enter salary:',
+            name: 'salary'
+        },
+        {
+            type: 'input',
+            message: 'Enter department id:',
+            name: 'department_id'
+        }        
+    ]).then((res) =>{ 
+        console.log(res); 
+        mainPrompt();
+    });
+
+}
+
+function viewDepartments(){
+    db.query('SELECT * FROM department', function (err, results) {
+        console.log(results);
+    });
+    mainPrompt();
+}
+
+function addDepartment(){
+    inquirer.prompt([
+        {
+            type: 'input',
+            message: 'Enter name:',
+            name: 'department_name'
+        }        
+    ]).then((res) =>{ 
+        console.log(res); 
+        mainPrompt();
+    });
+
+}
+
 
 
 mainPrompt();
