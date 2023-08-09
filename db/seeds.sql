@@ -6,7 +6,7 @@ VALUES  ("Component Control"),
         ("Structural"),
         ("Engineering");
 
-INSERT INTO roles (title, salary, department_id)
+INSERT INTO role (title, salary, department_id)
 VALUES  ("Chief Executive Officer", 165000, 1),
         ("Defense Manager", 65000, 2),
         ("Human Resources Manager", 142000, 3),

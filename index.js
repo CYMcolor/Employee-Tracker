@@ -34,8 +34,9 @@ const to_do = [
       }
 ]
 
-let mainPrompt = () =>{
-    inquirer.prompt(to_do).then((response)=>{
+let menu = () =>{
+    inquirer.prompt(to_do)
+    .then((response)=>{
         if( response.action == 'Exit')
         {
             //end the cconnection to th database
@@ -65,15 +66,17 @@ let mainPrompt = () =>{
                 addDepartment();
                 break;
         }
-        return;
-    });       
-}
+        
+    }); 
+    console.log('\n');      
+};
 
 function viewEmployees(){
-    db.query('SELECT * FROM employee', function (err, results) {
-        console.log(results);
+    db.query('SELECT * FROM employee', function (err, res) {
+        console.table(res);
     });
-    mainPrompt();
+    console.log('test space');
+    menu();
 }
 
 function addEmployee(){
@@ -101,21 +104,21 @@ function addEmployee(){
         
     ]).then((res) =>{ 
         console.log(res); 
-        mainPrompt();
+        menu();
     });
 
 }
 
 function updateRole(){
     console.log('update role');
-    mainPrompt();
+    menu();
 }
 
 function viewRoles(){
-    db.query('SELECT * FROM role', function (err, results) {
-        console.log(results);
+    db.query('SELECT * FROM role', function (err, res) {
+        console.table(res);
     });
-    mainPrompt();
+    menu();
 }
 
 function addRole(){
@@ -137,16 +140,19 @@ function addRole(){
         }        
     ]).then((res) =>{ 
         console.log(res); 
-        mainPrompt();
+        menu();
     });
 
 }
 
 function viewDepartments(){
-    db.query('SELECT * FROM department', function (err, results) {
-        console.log(results);
+    db.query('SELECT * FROM department', function (err, res) {
+        console.log('List of Departments:\n');
+        console.table(res);
     });
-    mainPrompt();
+    setTimeout(()=>{
+       menu();
+    },1000);
 }
 
 function addDepartment(){
@@ -158,8 +164,8 @@ function addDepartment(){
         }        
     ]).then((res) =>{ 
         console.log(res); 
-        mainPrompt();
+        menu();
     });
 }
 
-mainPrompt();
+menu();
