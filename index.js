@@ -160,17 +160,22 @@ function addDepartment(){
             name: 'department_name'
         }        
     ]).then((res) =>{ 
-        console.log(res); 
+        let sql = 'INSERT INTO department (name) VALUES ( ? )';
+        db.query(sql, res.department_name, function (err, res) {
+            if (err) throw err;
+        });
+        console.log(`Added ${res.department_name} to departments`);
         nextQuestion();
     });
 }
 
-menu();
-
 function nextQuestion(){
-    //calls menu prompt again if use didn't exit
-    //wrapped in timeout to not
+    //calls menu prompt again if user didn't exit
+    //wrapped in timeout to not clear console when entering new prompt
     setTimeout(()=>{
         menu();
-    },1000);
+    },500);
 }
+
+//init the program
+menu();
