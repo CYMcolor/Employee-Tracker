@@ -74,7 +74,7 @@ function viewEmployees(){
     db.query('SELECT * FROM employee', function (err, res) {
         console.table(res);
     });
-    console.log('test space');
+
     nextQuestion();
 }
 
@@ -102,14 +102,21 @@ function addEmployee(){
         }
         
     ]).then((res) =>{ 
-        let {first_name, last_name, role_id, manager_id} = res; 
+        let {first_name, last_name, role_id, manager_id} = res;
+        //set parameters in array 
         let params = [first_name, last_name, role_id, manager_id];
+        //replace empty strings with null
+        params.forEach(function (part, ind){
+            if(part == '')
+                params[ind] = null;
+        });
         let sql = 'INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ( ?, ?, ?, ?)';
         db.query(sql, params , function (err, res) {
             if (err) throw err;
         });
         console.log(`Added ${last_name}, ${first_name} to employees`); 
         nextQuestion();
+        
     });
 
 }
@@ -145,9 +152,17 @@ function addRole(){
         }        
     ])
     .then((res) =>{
-        let {role_title, salary, department_id} = res; 
+        console.log(res); 
+        let {role_title, salary, department_id} = res;
+        //set parameters in array
+        let params = [role_title, salary, department_id];
+        //replace empty strings with null
+        params.forEach(function (part, ind){
+            if(part == '')
+                params[ind] = null;
+        });
         let sql = 'INSERT INTO role (title, salary, department_id) VALUES ( ?, ?, ?)';
-        db.query(sql, [role_title, salary, department_id] , function (err, res) {
+        db.query(sql, params, function (err, res) {
             if (err) throw err;
         });
         console.log(`Added ${role_title} to roles`); 
