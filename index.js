@@ -34,7 +34,7 @@ const to_do = [
       }
 ]
 
-let menu = () =>{
+function menu(){
     inquirer.prompt(to_do)
     .then((response)=>{
         if( response.action == 'Exit')
@@ -66,9 +66,8 @@ let menu = () =>{
                 addDepartment();
                 break;
         }
-        
-    }); 
-    console.log('\n');      
+        return;        
+    });    
 };
 
 function viewEmployees(){
@@ -76,7 +75,7 @@ function viewEmployees(){
         console.table(res);
     });
     console.log('test space');
-    menu();
+    nextQuestion();
 }
 
 function addEmployee(){
@@ -104,21 +103,21 @@ function addEmployee(){
         
     ]).then((res) =>{ 
         console.log(res); 
-        menu();
+        nextQuestion();
     });
 
 }
 
 function updateRole(){
     console.log('update role');
-    menu();
+    nextQuestion();
 }
 
 function viewRoles(){
     db.query('SELECT * FROM role', function (err, res) {
         console.table(res);
     });
-    menu();
+    nextQuestion();
 }
 
 function addRole(){
@@ -140,7 +139,7 @@ function addRole(){
         }        
     ]).then((res) =>{ 
         console.log(res); 
-        menu();
+        nextQuestion();
     });
 
 }
@@ -150,9 +149,7 @@ function viewDepartments(){
         console.log('List of Departments:\n');
         console.table(res);
     });
-    setTimeout(()=>{
-       menu();
-    },1000);
+    nextQuestion();
 }
 
 function addDepartment(){
@@ -164,8 +161,16 @@ function addDepartment(){
         }        
     ]).then((res) =>{ 
         console.log(res); 
-        menu();
+        nextQuestion();
     });
 }
 
 menu();
+
+function nextQuestion(){
+    //calls menu prompt again if use didn't exit
+    //wrapped in timeout to not
+    setTimeout(()=>{
+        menu();
+    },1000);
+}
