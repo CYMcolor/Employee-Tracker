@@ -102,7 +102,13 @@ function addEmployee(){
         }
         
     ]).then((res) =>{ 
-        console.log(res); 
+        let {first_name, last_name, role_id, manager_id} = res; 
+        let params = [first_name, last_name, role_id, manager_id];
+        let sql = 'INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ( ?, ?, ?, ?)';
+        db.query(sql, params , function (err, res) {
+            if (err) throw err;
+        });
+        console.log(`Added ${last_name}, ${first_name} to employees`); 
         nextQuestion();
     });
 
