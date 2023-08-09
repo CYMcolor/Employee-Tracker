@@ -157,8 +157,39 @@ function addEmployee(){
 }
 
 function updateRole(){
-    console.log('update role');
-    nextQuestion();
+    inquirer.prompt([
+        {
+            type: 'input',
+            message: 'Enter employee id:',
+            name: 'employee_id',
+            validate: (input) => {                
+                if (isNaN(input)) {
+                   return 'Input was not a number';
+                }
+               return true;
+           }          
+        },
+        {
+            type: 'input',
+            message: 'Enter new role id:',
+            name: 'role_id',
+            validate: (input) => {                
+                if (isNaN(input)) {
+                   return 'Input was not a number';
+                }
+               return true;
+           }          
+        },
+    ])
+    .then((res) => {
+        let sql = 'UPDATE employee SET role_id = ? WHERE id = ?';
+        db.query(sql, [res.role_id, res.employee_id],function (err, res) {
+            if (err) throw err;
+        });
+        console.log(`update role: ${res.employee_id}`);
+        nextQuestion();
+    });
+    
 }
 
 function viewRoles(){
