@@ -154,7 +154,10 @@ function updateRole(){
 }
 
 function viewRoles(){
-    db.query('SELECT * FROM role', function (err, res) {
+    let sql = `SELECT role.id, role.title, role.salary, department.name AS department
+    FROM role 
+    JOIN department ON role.department_id = department.id;`;
+    db.query(sql, function (err, res) {
         console.table(res);
     });
     nextQuestion();
