@@ -137,8 +137,14 @@ function addRole(){
             message: 'Enter department id:',
             name: 'department_id'
         }        
-    ]).then((res) =>{ 
-        console.log(res); 
+    ])
+    .then((res) =>{
+        let {role_title, salary, department_id} = res; 
+        let sql = 'INSERT INTO role (title, salary, department_id) VALUES ( ?, ?, ?)';
+        db.query(sql, [role_title, salary, department_id] , function (err, res) {
+            if (err) throw err;
+        });
+        console.log(`Added ${role_title} to roles`); 
         nextQuestion();
     });
 
@@ -159,7 +165,8 @@ function addDepartment(){
             message: 'Enter name:',
             name: 'department_name'
         }        
-    ]).then((res) =>{ 
+    ])
+    .then((res) =>{ 
         let sql = 'INSERT INTO department (name) VALUES ( ? )';
         db.query(sql, res.department_name, function (err, res) {
             if (err) throw err;
