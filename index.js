@@ -71,7 +71,13 @@ function menu(){
 };
 
 function viewEmployees(){
-    db.query('SELECT * FROM employee', function (err, res) {
+    let sql = `SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary,
+        CONCAT(manager.first_name, ' ', manager.last_name) AS manager
+        FROM employee
+        JOIN employee manager ON manager.id = employee.manager_id
+        JOIN role ON role.department_id = employee.role_id
+        JOIN department ON role.department_id = department.id;`;
+    db.query(sql, function (err, res) {
         console.table(res);
     });
 
