@@ -10,7 +10,7 @@ const db = mysql.createConnection(
       user: process.env.DB_USER,
       // TODO: Add MySQL password
       password: process.env.DB_PASSWORD,
-      database: 'employees_db'
+      database: process.env.DB_NAME
     },
     console.log(`Connected to the employees_db database.`)
 );
@@ -38,9 +38,9 @@ let mainPrompt = () =>{
     inquirer.prompt(to_do).then((response)=>{
         if( response.action == 'Exit')
         {
-            console.log('You have exited the application');
             //end the cconnection to th database
             db.end();
+            console.log('You have exited the application'); 
         }
         switch (response.action) {
             case 'View All Employees':
@@ -160,9 +160,6 @@ function addDepartment(){
         console.log(res); 
         mainPrompt();
     });
-
 }
-
-
 
 mainPrompt();
