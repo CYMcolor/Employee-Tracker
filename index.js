@@ -83,22 +83,49 @@ function addEmployee(){
         {
             type: 'input',
             message: 'Enter first name:',
-            name: 'first_name'
+            name: 'first_name',
+            validate: (input) => {
+                if (input.length < 1 ) {
+                    return 'Text was empty, enter again';
+                 }
+                 if (input.length > 30 ) {
+                    return 'Text was yoo long, enter again';
+                 }
+                return true;
+            }
         },
         {
             type: 'input',
             message: 'Enter last name:',
-            name: 'last_name'
+            name: 'last_name',
+            validate: (input) => {
+                 if (input.length > 30 ) {
+                    return 'Text was yoo long, enter again';
+                 }
+                return true;
+            }
         },
         {
             type: 'input',
             message: 'Enter role id:',
-            name: 'role_id'
+            name: 'role_id',
+            validate: (input) => {
+                if (isNaN(input)) {
+                   return 'Input was not a number';
+                }
+               return true;
+           }
         },
         {
             type: 'input',
             message: 'Enter manager id if applicable:',
-            name: 'manager_id'
+            name: 'manager_id',
+            validate: (input) => {
+                if (isNaN(input)) {
+                   return 'Input was not a number';
+                }
+               return true;
+           }
         }
         
     ]).then((res) =>{ 
@@ -114,7 +141,7 @@ function addEmployee(){
         db.query(sql, params , function (err, res) {
             if (err) throw err;
         });
-        console.log(`Added ${last_name}, ${first_name} to employees`); 
+        console.log(`Added ${first_name} ${last_name} to employees`); 
         nextQuestion();
         
     });
@@ -138,17 +165,38 @@ function addRole(){
         {
             type: 'input',
             message: 'Enter title:',
-            name: 'role_title'
+            name: 'role_title',
+            validate: (input) => {
+                if (input.length < 1 ) {
+                    return 'Text was empty, enter again';
+                 }
+                 if (input.length > 30 ) {
+                    return 'Text was yoo long, enter again';
+                 }
+                return true;
+            }            
         },
         {
             type: 'input',
             message: 'Enter salary:',
-            name: 'salary'
+            name: 'salary',
+            validate: (input) => {
+                if (isNaN(input)) {
+                   return 'Input was not a number';
+                }
+               return true;
+           }
         },
         {
             type: 'input',
             message: 'Enter department id:',
-            name: 'department_id'
+            name: 'department_id',
+            validate: (input) => {
+                if (isNaN(input)) {
+                   return 'Input was not a number';
+                }
+               return true;
+           }
         }        
     ])
     .then((res) =>{
@@ -184,7 +232,16 @@ function addDepartment(){
         {
             type: 'input',
             message: 'Enter name:',
-            name: 'department_name'
+            name: 'department_name',
+            validate: (input) => {
+                if (input.length < 1 ) {
+                    return 'Text was empty, enter again';
+                 }
+                 if (input.length > 30 ) {
+                    return 'Text was yoo long, enter again';
+                 }
+                return true;
+            }
         }        
     ])
     .then((res) =>{ 
