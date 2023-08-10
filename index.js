@@ -81,7 +81,7 @@ function viewEmployeesMenu(){
         choices: [
           'View by id', 
           'view by manager',
-          'view by depatment',
+          'view by department',
           'back'
         ],
         name: 'action'
@@ -94,7 +94,7 @@ function viewEmployeesMenu(){
             case 'view by manager':
                 viewEmployeesManager();
                 break;
-            case 'view by depatment':
+            case 'view by department':
                 viewEmployeesDeparment();
                 break;
             case 'back':
@@ -115,6 +115,7 @@ function viewEmployeesID(){
             LEFT JOIN department ON role.department_id = department.id
             ORDER by employee.id;`;
     db.query(sql, function (err, res) {
+        console.log('List of Employees by ID:\n');
         console.table(res);
     });
 
@@ -131,6 +132,7 @@ function viewEmployeesManager(){
             LEFT JOIN department ON role.department_id = department.id
             ORDER by manager.id;`;
     db.query(sql, function (err, res) {
+        console.log('List of Employees by Manager:\n');
         console.table(res);
     });
 
@@ -147,6 +149,7 @@ function viewEmployeesDeparment(){
             LEFT JOIN department ON role.department_id = department.id
             ORDER by department.id;`;
     db.query(sql, function (err, res) {
+        console.log('List of Employees by Department:\n');
         console.table(res);
     });
 
@@ -214,11 +217,12 @@ function addEmployee(){
         });
         let sql = 'INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ( ?, ?, ?, ?)';
         db.query(sql, params , function (err, res) {
-            if (err) throw err;
+            if (err)  
+                console.log('could NOT add employee');
+            else
+                console.log(`Added ${first_name} ${last_name} to employees`); 
         });
-        console.log(`Added ${first_name} ${last_name} to employees`); 
-        nextQuestion();
-        
+        nextQuestion();   
     });
 
 }
@@ -331,6 +335,7 @@ function viewRoles(){
     FROM role 
     LEFT JOIN department ON role.department_id = department.id;`;
     db.query(sql, function (err, res) {
+        console.log('List of Roles:\n');
         console.table(res);
     });
     nextQuestion();
@@ -376,7 +381,6 @@ function addRole(){
         }        
     ])
     .then((res) =>{
-        console.log(res); 
         let {role_title, salary, department_id} = res;
         //set parameters in array
         let params = [role_title, salary, department_id];
@@ -387,9 +391,11 @@ function addRole(){
         });
         let sql = 'INSERT INTO role (title, salary, department_id) VALUES ( ?, ?, ?)';
         db.query(sql, params, function (err, res) {
-            if (err) throw err;
+            if (err) 
+                console.log('could NOT add role');
+            else
+                console.log(`Added ${role_title} to roles`); 
         });
-        console.log(`Added ${role_title} to roles`); 
         nextQuestion();
     });
 
@@ -421,9 +427,12 @@ function addDepartment(){
     .then((res) =>{ 
         let sql = 'INSERT INTO department (name) VALUES ( ? )';
         db.query(sql, res.department_name, function (err, res) {
-            if (err) throw err;
+            if (err) 
+                console.log('could NOT add department');
+            else
+                console.log(`Added ${res.department_name} to departments`);
         });
-        console.log(`Added ${res.department_name} to departments`);
+        
         nextQuestion();
     });
 }
