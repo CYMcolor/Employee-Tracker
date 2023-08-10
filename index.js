@@ -28,6 +28,7 @@ const to_do = [
           'Add Role',
           'View All Departments',
           'Add Department',
+          'Delete Information',
           'Exit'
         ],
         name: 'action'
@@ -61,6 +62,9 @@ function menu(){
                 break;
             case 'View All Departments':
                 viewDepartments();
+                break;
+            case 'Delete Information':
+                deleteMenu();
                 break;
             case 'Add Department':
                 addDepartment();
@@ -107,8 +111,8 @@ function viewEmployeesID(){
                     ELSE manager.first_name END AS manager
             FROM employee
             LEFT JOIN employee manager ON manager.id = employee.manager_id
-            JOIN role ON role.id = employee.role_id
-            JOIN department ON role.department_id = department.id
+            LEFT JOIN role ON role.id = employee.role_id
+            LEFT JOIN department ON role.department_id = department.id
             ORDER by employee.id;`;
     db.query(sql, function (err, res) {
         console.table(res);
@@ -123,8 +127,8 @@ function viewEmployeesManager(){
                     ELSE manager.first_name END AS manager
             FROM employee
             LEFT JOIN employee manager ON manager.id = employee.manager_id
-            JOIN role ON role.id = employee.role_id
-            JOIN department ON role.department_id = department.id
+            LEFT JOIN role ON role.id = employee.role_id
+            LEFT JOIN department ON role.department_id = department.id
             ORDER by manager.id;`;
     db.query(sql, function (err, res) {
         console.table(res);
@@ -139,8 +143,8 @@ function viewEmployeesDeparment(){
                     ELSE manager.first_name END AS manager
             FROM employee
             LEFT JOIN employee manager ON manager.id = employee.manager_id
-            JOIN role ON role.id = employee.role_id
-            JOIN department ON role.department_id = department.id
+            LEFT JOIN role ON role.id = employee.role_id
+            LEFT JOIN department ON role.department_id = department.id
             ORDER by department.id;`;
     db.query(sql, function (err, res) {
         console.table(res);
@@ -325,7 +329,7 @@ function updateManager(){
 function viewRoles(){
     let sql = `SELECT role.id, role.title, role.salary, department.name AS department
     FROM role 
-    JOIN department ON role.department_id = department.id;`;
+    LEFT JOIN department ON role.department_id = department.id;`;
     db.query(sql, function (err, res) {
         console.table(res);
     });
@@ -400,28 +404,122 @@ function viewDepartments(){
 }
 
 function addDepartment(){
-    inquirer.prompt([
-        {
-            type: 'input',
-            message: 'Enter name:',
-            name: 'department_name',
-            validate: (input) => {
-                if (input.length < 1 ) {
-                    return 'Text was empty, enter again';
-                 }
-                 if (input.length > 30 ) {
-                    return 'Text was yoo long, enter again';
-                 }
-                return true;
+    inquirer.prompt([{
+        type: 'input',
+        message: 'Enter name:',
+        name: 'department_name',
+        validate: (input) => {
+            if (input.length < 1 ) {
+                return 'Text was empty, enter again';
             }
-        }        
-    ])
+            if (input.length > 30 ) {
+                return 'Text was yoo long, enter again';
+            }
+            return true;
+        }
+    }])
     .then((res) =>{ 
         let sql = 'INSERT INTO department (name) VALUES ( ? )';
         db.query(sql, res.department_name, function (err, res) {
             if (err) throw err;
         });
         console.log(`Added ${res.department_name} to departments`);
+        nextQuestion();
+    });
+}
+
+function deleteMenu(){
+    inquirer.prompt([{
+        type: 'list',
+        message: 'What would you like to delete?',
+        choices: [
+          'delete department', 
+          'delete role',
+          'delete employee',
+          'back'
+        ],
+        name: 'action'
+      }])
+    .then((response)=>{
+        switch (response.action) {
+            case 'delete department':
+                deleteDepartment();
+                break;
+            case 'delete role':
+                deleteRole();
+                break;
+            case 'delete employee':
+                deleteEmployee();
+                break;
+            case 'back':
+                nextQuestion();
+                break;
+        }
+    });
+}
+
+function deleteDepartment(){
+    inquirer.prompt([{
+        type: 'input',
+        message: 'Enter deparment id:',
+        name: 'department_id',
+        validate: (input) => {
+            if (isNaN(input)) {
+               return 'Input was not a number';
+            }
+           return true;
+           }
+    }])
+    .then((res) =>{ 
+        let sql = 'DELETE FROM department WHERE department.id = ?';
+        db.query(sql, res.department_id, function (err, res) {
+            if (err) throw err;
+        });
+        console.log(`deleted ${res.department_id} from departments`);
+        nextQuestion();
+    });
+}
+
+function deleteRole(){
+    inquirer.prompt([{
+        type: 'input',
+        message: 'Enter role id:',
+        name: 'role_id',
+        validate: (input) => {
+            if (isNaN(input)) {
+               return 'Input was not a number';
+            }
+           return true;
+           }
+    }])
+    .then((res) =>{ 
+        let sql = 'DELETE FROM role WHERE role.id = ?';
+        db.query(sql, res.role_id, function (err, res) {
+            if (err) throw err;
+        });
+        console.log(`deleted ${res.role_id} from departments`);
+        nextQuestion();
+    });
+}
+
+function deleteEmployee(){
+    inquirer.prompt([{
+        type: 'input',
+        message: 'Enter employee id:',
+        name: 'employee_id',
+        validate: (input) => {
+            if (isNaN(input)) {
+               return 'Input was not a number';
+            }
+           return true;
+           }
+    }])
+    .then((res) =>{ 
+        let sql = 'DELETE FROM employee WHERE employee.id = ?';
+        db.query(sql, res.employee_id, function (err, res) {
+            if (err) throw err;
+        });
+        console.log(`deleted ${res.employee_id} from departments`);
         nextQuestion();
     });
 }
