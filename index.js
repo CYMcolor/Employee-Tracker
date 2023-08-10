@@ -173,7 +173,7 @@ function updateRole(){
             type: 'input',
             message: 'Enter new role id:',
             name: 'role_id',
-            validate: (input) => {                
+            validate: (input) => {          
                 if (isNaN(input)) {
                    return 'Input was not a number';
                 }
@@ -182,11 +182,15 @@ function updateRole(){
         },
     ])
     .then((res) => {
+        let {role_id, employee_id}  = res;
         let sql = 'UPDATE employee SET role_id = ? WHERE id = ?';
         db.query(sql, [res.role_id, res.employee_id],function (err, res) {
-            if (err) throw err;
+            if (err) 
+                console.log(`did NOT update`);
+            else
+                console.log(`updated emplyee ${employee_id}`);
         });
-        console.log(`update role: ${res.employee_id}`);
+
         nextQuestion();
     });
     
