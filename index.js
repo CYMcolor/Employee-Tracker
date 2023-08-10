@@ -27,6 +27,7 @@ const to_do = [
           'Update Employee Information',
           'Add Information',
           'Delete Information',
+          'View Department Budgets',
           'Exit'
         ],
         name: 'action'
@@ -60,6 +61,9 @@ function menu(){
                 break;
             case 'Delete Information':
                 deleteMenu();
+                break;
+            case 'View Department Budgets':
+                viewBudgets();
                 break;            
         }
         return;        
@@ -553,6 +557,19 @@ function deleteEmployee(){
         console.log(`deleted ${res.employee_id} from departments`);
         nextQuestion();
     });
+}
+function viewBudgets(){
+    let sql = `SELECT department.id, department.name AS department, sum(role.salary) AS salary_total
+    FROM employee
+    JOIN role ON role.id = employee.role_id
+    JOIN department ON role.department_id = department.id
+    GROUP BY department.id`;
+    db.query(sql, function (err, res) {
+        console.log('Budgets List:\n');
+        console.table(res);
+    });
+
+    nextQuestion();
 }
 
 function nextQuestion(){
