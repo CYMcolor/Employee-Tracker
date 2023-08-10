@@ -7,12 +7,12 @@ VALUES  ("Component Control"),
         ("Engineering");
 
 INSERT INTO role (title, salary, department_id)
-VALUES  ("Chief Executive Officer", 165000, 1),
-        ("Defense Manager", 65000, 2),
-        ("Human Resources Manager", 142000, 3),
-        ("Buisness Manager", 69000, 4),
-        ("Structural Manager", 79000, 5),
-        ("Engineering Manager", 127000, 6);
+VALUES  ("Chief Executive Officer", 165, 1),
+        ("Defense Manager", 65, 2),
+        ("Human Resources Manager", 142, 3),
+        ("Buisness Manager", 69, 4),
+        ("Structural Manager", 79, 5),
+        ("Engineering Manager", 127, 6);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES  ("Kirsten", "Wright", 1, NULL),

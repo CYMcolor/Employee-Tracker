@@ -559,7 +559,7 @@ function deleteEmployee(){
     });
 }
 function viewBudgets(){
-    let sql = `SELECT department.id, department.name AS department, sum(role.salary) AS salary_total
+    let sql = `SELECT department.id, department.name AS department, sum(role.salary) AS salary_total, count(employee.id) as number_of_employees
     FROM employee
     JOIN role ON role.id = employee.role_id
     JOIN department ON role.department_id = department.id
