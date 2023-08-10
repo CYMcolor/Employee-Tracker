@@ -23,7 +23,7 @@ const to_do = [
         choices: [
           'View All Employees', 
           'Add Employee',
-          'Update Employee Role',
+          'Update Employee Information',
           'View All Roles',
           'Add Role',
           'View All Departments',
@@ -45,13 +45,13 @@ function menu(){
         }
         switch (response.action) {
             case 'View All Employees':
-                viewEmployees();
+                viewEmployeesMenu();
                 break;
             case 'Add Employee':
                 addEmployee();
                 break;
-            case 'Update Employee Role':
-                updateRole();
+            case 'Update Employee Information':
+                updateEmployeeMenu();
                 break;
             case 'View All Roles':
                 viewRoles();
@@ -70,7 +70,38 @@ function menu(){
     });    
 };
 
-function viewEmployees(){
+function viewEmployeesMenu(){
+    inquirer.prompt([{
+        type: 'list',
+        message: 'What would you like to do?',
+        choices: [
+          'View by id', 
+          'view by manager',
+          'view by depatment',
+          'back'
+        ],
+        name: 'action'
+      }])
+    .then((response)=>{
+        switch (response.action) {
+            case 'View by id':
+                viewEmployeesID();
+                break;
+            case 'view by manager':
+                viewEmployeesManager();
+                break;
+            case 'view by depatment':
+                viewEmployeesDeparment();
+                break;
+            case 'back':
+                nextQuestion();
+                break;
+        }
+    });
+
+}
+
+function viewEmployeesID(){
     let sql = `SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary,
                 CASE  WHEN manager.last_name IS NOT null THEN CONCAT(manager.first_name, ' ', manager.last_name)
                     ELSE manager.first_name END AS manager
@@ -79,6 +110,38 @@ function viewEmployees(){
             JOIN role ON role.id = employee.role_id
             JOIN department ON role.department_id = department.id
             ORDER by employee.id;`;
+    db.query(sql, function (err, res) {
+        console.table(res);
+    });
+
+    nextQuestion();
+}
+
+function viewEmployeesManager(){
+    let sql = `SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary,
+                CASE  WHEN manager.last_name IS NOT null THEN CONCAT(manager.first_name, ' ', manager.last_name)
+                    ELSE manager.first_name END AS manager
+            FROM employee
+            LEFT JOIN employee manager ON manager.id = employee.manager_id
+            JOIN role ON role.id = employee.role_id
+            JOIN department ON role.department_id = department.id
+            ORDER by manager.id;`;
+    db.query(sql, function (err, res) {
+        console.table(res);
+    });
+
+    nextQuestion();
+}
+
+function viewEmployeesDeparment(){
+    let sql = `SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary,
+                CASE  WHEN manager.last_name IS NOT null THEN CONCAT(manager.first_name, ' ', manager.last_name)
+                    ELSE manager.first_name END AS manager
+            FROM employee
+            LEFT JOIN employee manager ON manager.id = employee.manager_id
+            JOIN role ON role.id = employee.role_id
+            JOIN department ON role.department_id = department.id
+            ORDER by department.id;`;
     db.query(sql, function (err, res) {
         console.table(res);
     });
@@ -155,6 +218,32 @@ function addEmployee(){
     });
 
 }
+function updateEmployeeMenu(){
+    inquirer.prompt([{
+        type: 'list',
+        message: 'What would you like to update?',
+        choices: [
+          'update role', 
+          'update manager',
+          'back'
+        ],
+        name: 'action'
+      }])
+    .then((response)=>{
+        switch (response.action) {
+            case 'update role':
+                updateRole();
+                break;
+            case 'update manager':
+                updateManager();
+                break;
+            case 'back':
+                nextQuestion();
+                break;
+        }
+    });
+
+}
 
 function updateRole(){
     inquirer.prompt([
@@ -192,8 +281,45 @@ function updateRole(){
         });
 
         nextQuestion();
-    });
-    
+    });    
+}
+function updateManager(){
+    inquirer.prompt([
+        {
+            type: 'input',
+            message: 'Enter employee id:',
+            name: 'employee_id',
+            validate: (input) => {                
+                if (isNaN(input)) {
+                   return 'Input was not a number';
+                }
+               return true;
+           }          
+        },
+        {
+            type: 'input',
+            message: 'Enter new manager id:',
+            name: 'manager_id',
+            validate: (input) => {          
+                if (isNaN(input)) {
+                   return 'Input was not a number';
+                }
+               return true;
+           }          
+        },
+    ])
+    .then((res) => {
+        let {manager_id, employee_id}  = res;
+        let sql = 'UPDATE employee SET manager_id = ? WHERE id = ?';
+        db.query(sql, [res.manager_id, res.employee_id],function (err, res) {
+            if (err) 
+                console.log(`did NOT update`);
+            else
+                console.log(`updated emplyee ${employee_id}`);
+        });
+
+        nextQuestion();
+    });    
 }
 
 function viewRoles(){
