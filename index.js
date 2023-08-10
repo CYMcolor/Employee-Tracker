@@ -22,12 +22,10 @@ const to_do = [
         message: 'What would you like to do?',
         choices: [
           'View All Employees', 
-          'Add Employee',
-          'Update Employee Information',
           'View All Roles',
-          'Add Role',
           'View All Departments',
-          'Add Department',
+          'Update Employee Information',
+          'Add Information',
           'Delete Information',
           'Exit'
         ],
@@ -48,27 +46,21 @@ function menu(){
             case 'View All Employees':
                 viewEmployeesMenu();
                 break;
-            case 'Add Employee':
-                addEmployee();
-                break;
-            case 'Update Employee Information':
-                updateEmployeeMenu();
-                break;
             case 'View All Roles':
                 viewRoles();
-                break;
-            case 'Add Role':
-                addRole();
                 break;
             case 'View All Departments':
                 viewDepartments();
                 break;
+            case 'Update Employee Information':
+                updateEmployeeMenu();
+                break;
+            case 'Add Information':
+                addMenu();
+                break;
             case 'Delete Information':
                 deleteMenu();
-                break;
-            case 'Add Department':
-                addDepartment();
-                break;
+                break;            
         }
         return;        
     });    
@@ -137,6 +129,36 @@ function viewEmployeesManager(){
     });
 
     nextQuestion();
+}
+
+function addMenu(){
+    inquirer.prompt([{
+        type: 'list',
+        message: 'What would you like to add?',
+        choices: [
+          'add department', 
+          'add role',
+          'add employee',
+          'back'
+        ],
+        name: 'action'
+      }])
+    .then((response)=>{
+        switch (response.action) {
+            case 'add department':
+                addDepartment();
+                break;
+            case 'add role':
+                addRole();
+                break;
+            case 'add employee':
+                addEmployee();
+                break;
+            case 'back':
+                nextQuestion();
+                break;
+        }
+    });
 }
 
 function viewEmployeesDeparment(){
@@ -426,7 +448,7 @@ function addDepartment(){
     }])
     .then((res) =>{ 
         let sql = 'INSERT INTO department (name) VALUES ( ? )';
-        db.query(sql, res.department_name, function (err, res) {
+        db.query(sql, res.department_name, function (err, resp) {
             if (err) 
                 console.log('could NOT add department');
             else

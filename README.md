@@ -1,7 +1,5 @@
 # Employee-Tracker
 
-[![License: MIT License](https://img.shields.io/badge/License-MIT_License-blue.svg)](https://opensource.org/licenses/MIT)
-
 ## Description
 A content manager system to interact with an employee database using MYSQL and inquirer
 
@@ -18,7 +16,7 @@ Download code from the GitHub repository. Have Node.js installed. Link to Node.j
 ## Usage
 In a terminal the user should source their database. To connect the database to the application, the user should change the data in .env.EXAMPLE to their use information and remove the .EXAMPLE part from the file name.
 
-Aftewerwards the user can start the application by entering node index. They wil be presented with a menu with  View ALll Employees, Add Employee, Update, Employee Information, View All Roles, Add Role, View All Departments, Add Department, Delete Information, and Exit. The user may have to scroll in order to see all the options. Choosing exit will close the application. View All Employees, Update Employee Information, and Delete Information all have sub menus. All have a back option which will show the main menu again.
+Aftewerwards the user can start the application by entering node index. They wil be presented with a menu with  View ALll Employees, View All Roles, View All Departments, Update Employee Information, Add Information, Delete Information, and Exit. The user may have to scroll in order to see all the options. Choosing exit will close the application. View All Employees, Update Employee Information, Add Information, and Delete Information all have sub menus. All have a back option which will show the main menu again.
 
 View All Employees can be viewd by id, manager, department. All the column information will bepresented in the same location, but the order of the information will be displayed by the option chosen.
 
@@ -35,6 +33,8 @@ You can click on the badge for further information.
 
 ## Contributing
 Node.js (download here: https://nodejs.dev/en/download/)
+
+
 Packages used: mysql2, dotenv, and inquirer (vers. 2.8.4)
 
 ## Contact
