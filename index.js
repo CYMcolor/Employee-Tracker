@@ -111,7 +111,7 @@ function viewEmployeesID(){
             LEFT JOIN department ON role.department_id = department.id
             ORDER by employee.id;`;
     db.query(sql, function (err, res) {
-        console.log('List of Employees by ID:\n');
+        console.log('List of Employees by ID:');
         console.table(res);
     });
 
@@ -128,7 +128,7 @@ function viewEmployeesManager(){
             LEFT JOIN department ON role.department_id = department.id
             ORDER by manager.id;`;
     db.query(sql, function (err, res) {
-        console.log('List of Employees by Manager:\n');
+        console.log('List of Employees by Manager:');
         console.table(res);
     });
 
@@ -175,7 +175,7 @@ function viewEmployeesDeparment(){
             LEFT JOIN department ON role.department_id = department.id
             ORDER by department.id;`;
     db.query(sql, function (err, res) {
-        console.log('List of Employees by Department:\n');
+        console.log('List of Employees by Department:');
         console.table(res);
     });
 
@@ -361,7 +361,7 @@ function viewRoles(){
     FROM role 
     LEFT JOIN department ON role.department_id = department.id;`;
     db.query(sql, function (err, res) {
-        console.log('List of Roles:\n');
+        console.log('List of Roles:');
         console.table(res);
     });
     nextQuestion();
@@ -429,7 +429,7 @@ function addRole(){
 
 function viewDepartments(){
     db.query('SELECT * FROM department', function (err, res) {
-        console.log('List of Departments:\n');
+        console.log('List of Departments:');
         console.table(res);
     });
     nextQuestion();
@@ -565,7 +565,7 @@ function viewBudgets(){
     JOIN department ON role.department_id = department.id
     GROUP BY department.id`;
     db.query(sql, function (err, res) {
-        console.log('Budgets List:\n');
+        console.log('Budgets List:');
         console.table(res);
     });
 
@@ -577,7 +577,7 @@ function nextQuestion(){
     //wrapped in timeout to not clear console when entering new prompt
     setTimeout(()=>{
         menu();
-    },500);
+    },100);
 }
 
 //init the program

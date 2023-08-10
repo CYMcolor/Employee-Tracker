@@ -20,6 +20,8 @@ The structure of the sql database will be diplayed in this photo:
 
 ![database tables](./assets/images/tables.png)
 
+The database has all the ids auto incremented, so if the user delete department 7 and then add another department that deparment will have the id of 8.
+
 Aftewerwards the user can start the application by entering node index. They wil be presented with a menu with  View ALll Employees, View All Roles, View All Departments, Update Employee Information, Add Information, Delete Information, View Department Budgets, and Exit. The user may have to scroll in order to see all the options. Choosing exit will close the application. View All Employees, Update Employee Information, Add Information, and Delete Information all have sub menus. All have a back option which will show the main menu again.
 
 View All Employees can be viewd by id, manager, department. All the column information will bepresented in the same location, but the order of the information will be displayed by the option chosen.
@@ -28,7 +30,11 @@ When adding, updating, and deleting the user must enter numbers on data like ids
 
 The view budgets is the combined salaries of all employees for their respective department.
 
+Screenshot of prompts:
 ![screenshot of prompts](./assets/images/screenshot.png)
+
+Video demonstration:
+[![video demonstration](./assets/images/video-static.PNG)](https://drive.google.com/file/d/1edjYbRALtFlozNgdLWF0O0Dzk1eaKcs7/view)
 
 ## License
  This application is covered under MIT License.
